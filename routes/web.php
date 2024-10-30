@@ -2,7 +2,9 @@
 
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
+use App\Actions\AutoCampaignCheckin;
 use Inertia\Inertia;
+
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -22,3 +24,6 @@ Route::middleware([
         return Inertia::render('Dashboard');
     })->name('dashboard');
 });
+
+Route::get('campaign-checkin/{campaign}/{checkin?}', AutoCampaignCheckin::class)
+    ->name('campaign-checkin');
