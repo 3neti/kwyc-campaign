@@ -5,9 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Spatie\SchemalessAttributes\SchemalessAttributes;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use App\Traits\{HasAttributes, HasMeta};
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
-use App\Traits\HasMeta;
 
 /**
  * Class Campaign
@@ -23,6 +23,7 @@ use App\Traits\HasMeta;
  * @property Agent $agent
  * @property Organization $organization
  * @property string $url
+ * @property string $qrcode_uri
  * @property bool $enabled
  * @property bool $valid
  *
@@ -31,12 +32,13 @@ use App\Traits\HasMeta;
 class Campaign extends Model
 {
     /** @use HasFactory<\Database\Factories\CampaignFactory> */
+    use HasAttributes;
     use HasFactory;
     use HasUuids;
     use HasMeta;
 
     protected $fillable = [
-        'name'
+        'name', 'email', 'mobile', 'webhook'
     ];
 
     public function agent(): \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -47,31 +49,5 @@ class Campaign extends Model
     public function organization(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Organization::class, 'team_id');
-    }
-
-    public function getUrlAttribute(): string
-    {
-        return route('campaign-checkin', ['campaign' => $this->id]);
-    }
-
-    public function setEnabledAttribute(bool $value): self
-    {
-        $this->setAttribute('enabled_at', $value ? now() : null);
-
-        return $this;
-    }
-
-    public function getEnabledAttribute(): bool
-    {
-        return $this->getAttribute('enabled_at')
-            && $this->getAttribute('enabled_at') <= now();
-    }
-
-    public function getValidAttribute(): bool
-    {
-        $invalid = $this->getAttribute('valid_until')
-            && $this->getAttribute('valid_until') <= now();
-
-        return ! $invalid;
     }
 }

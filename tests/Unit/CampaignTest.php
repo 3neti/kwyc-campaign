@@ -13,6 +13,7 @@ test('campaign has attributes', function () {
     expect($campaign->enabled_at)->toBeNull();
     expect($campaign->valid_until)->toBeNull();
     expect($campaign->url)->toBe(route('campaign-checkin', ['campaign' => $campaign->id]));
+    expect($campaign->qrcode_uri)->toBeString();
 });
 
 test('campaign toggle between enabled and disabled', function () {
