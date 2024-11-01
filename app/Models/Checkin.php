@@ -38,7 +38,7 @@ class Checkin extends Model
     use HasMeta;
 
     protected $fillable = [
-        'url', 'data'
+        'url', 'data', 'data_retrieved_at'
     ];
 
     protected $casts = [

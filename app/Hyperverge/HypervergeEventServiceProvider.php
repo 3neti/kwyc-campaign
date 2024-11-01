@@ -16,5 +16,6 @@ class HypervergeEventServiceProvider extends ServiceProvider
     {
         parent::boot();
         Event::listen(events: URLGenerated::class , listener: UpdateCheckinUrl::class);
+        Event::listen(events: ResultRetrieved::class , listener: ProcessResult::class);
     }
 }
