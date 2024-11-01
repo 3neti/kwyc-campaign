@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Foundation\Testing\{RefreshDatabase, WithFaker};
-use App\Models\{Agent, Campaign, Organization};
+use App\Models\{Agent, Campaign, Checkin, Organization};
 use Illuminate\Support\Carbon;
 
 uses(RefreshDatabase::class, WithFaker::class);
@@ -54,4 +54,22 @@ test('campaign has organization relation', function () {
     $campaign->organization()->associate($organization);
     $campaign->save();
     expect($campaign->organization->is($organization))->toBeTrue();
+});
+
+test('campaign has many checkins', function () {
+    $campaign = Campaign::factory()->create();
+    expect($campaign->checkins)->toHaveCount(0);
+    [$checkin1, $checkin2] = Checkin::factory(2)->make();
+    $campaign->checkins()->saveMany([$checkin1, $checkin2]);
+    $campaign->save();
+    $campaign->refresh();
+    expect($campaign->checkins)->toHaveCount(2);
+    $url = $this->faker->url();
+    $id = $this->faker->uuid();
+    $campaign->checkins()->forceCreate(['id' => $id, 'url' => $url]);
+    $campaign->save();
+    $campaign->refresh();
+    expect($campaign->checkins)->toHaveCount(3);
+    $checkin = Checkin::find($id);
+    expect($checkin->url)->toBe($url);
 });

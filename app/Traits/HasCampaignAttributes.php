@@ -2,7 +2,7 @@
 
 namespace App\Traits;
 
-trait HasAttributes
+trait HasCampaignAttributes
 {
     public function getUrlAttribute(): string
     {

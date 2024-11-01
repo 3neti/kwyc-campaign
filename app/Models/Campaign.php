@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Spatie\SchemalessAttributes\SchemalessAttributes;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
-use App\Traits\{HasAttributes, HasMeta};
+use App\Traits\{HasCampaignAttributes, HasMeta};
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 
@@ -28,11 +28,12 @@ use Illuminate\Support\Carbon;
  * @property bool $valid
  *
  * @method int getKey()
+ * @method static mixed find($id, $columns = ['*'])
  */
 class Campaign extends Model
 {
     /** @use HasFactory<\Database\Factories\CampaignFactory> */
-    use HasAttributes;
+    use HasCampaignAttributes;
     use HasFactory;
     use HasUuids;
     use HasMeta;
@@ -49,5 +50,10 @@ class Campaign extends Model
     public function organization(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Organization::class, 'team_id');
+    }
+
+    public function checkins(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Checkin::class);
     }
 }
