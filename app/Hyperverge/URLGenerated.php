@@ -7,6 +7,12 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Queue\SerializesModels;
 
+/**
+ * Class URLGenerated
+ *
+ * @property string $transactionId
+ * @property string $url
+ */
 class URLGenerated
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;

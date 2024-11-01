@@ -1,16 +1,10 @@
 <?php
 
-use Illuminate\Events\CallQueuedListener;
-use Illuminate\Support\Facades\Queue;
+use App\Hyperverge\{GenerateURL, Hyperverge, UpdateCheckinUrl, URLGenerated};
 use Illuminate\Foundation\Testing\{RefreshDatabase, WithFaker};
-use Illuminate\Support\Facades\Event;
-use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\{Event, Http, Queue};
+use Illuminate\Events\CallQueuedListener;
 use Illuminate\Http\Client\Request;
-use App\Hyperverge\URLGenerated;
-use App\Hyperverge\GenerateURL;
-use App\Hyperverge\Hyperverge;
-use Illuminate\Support\Str;
-
 
 uses(RefreshDatabase::class, WithFaker::class);
 
@@ -103,18 +97,18 @@ it('can generate the url with injected workflow', function (string $workflowId) 
     fn () => $this->faker->word()
 ]);
 
-//it('fires update checkin url action', function () {
-//    Queue::fake();
-//
-//    /*** arrange ***/
-//    $transactionId = $this->faker->uuid();
-//
-//    /*** act ***/
-//    $this->action->run($transactionId);
-//    Queue::assertPushed(
-//        CallQueuedListener::class,
-//        function ($listener) {
-//            return $listener->class === UpdateCheckinUrl::class;
-//        }
-//    );
-//});
+it('fires update checkin url action', function () {
+    Queue::fake();
+
+    /*** arrange ***/
+    $transactionId = $this->faker->uuid();
+
+    /*** act ***/
+    $url = $this->action->run($transactionId);
+    Queue::assertPushed(
+        CallQueuedListener::class,
+        function ($listener) {
+            return $listener->class === UpdateCheckinUrl::class;
+        }
+    );
+});
