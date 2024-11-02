@@ -2,13 +2,12 @@
 
 namespace App\Hyperverge\Actions;
 
-use App\Hyperverge\Events\ResultProcessed;
-use App\Hyperverge\Events\ResultRetrieved;
+use App\Hyperverge\Events\{ResultProcessed, ResultRetrieved};
 use App\Hyperverge\Pipes\PersistExtractedFields;
-use App\Models\Checkin;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Pipeline\Pipeline;
 use Lorisleiva\Actions\Concerns\AsAction;
+use Illuminate\Pipeline\Pipeline;
+use App\Models\Checkin;
 
 class ProcessResult implements ShouldQueue
 {

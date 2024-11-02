@@ -3,9 +3,9 @@
 namespace App\Hyperverge\Pipes;
 
 use App\Hyperverge\Enums\Extracted;
+use Illuminate\Support\Arr;
 use App\Models\Checkin;
 use Closure;
-use Illuminate\Support\Arr;
 
 class PersistExtractedFields
 {

@@ -2,11 +2,9 @@
 
 namespace App\Hyperverge;
 
-use App\Hyperverge\Actions\ProcessResult;
-use App\Hyperverge\Actions\UpdateCheckinUrl;
-use App\Hyperverge\Events\ResultRetrieved;
-use App\Hyperverge\Events\URLGenerated;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
+use App\Hyperverge\Actions\{ProcessResult, UpdateCheckinUrl};
+use App\Hyperverge\Events\{ResultRetrieved, URLGenerated};
 use Illuminate\Support\Facades\Event;
 
 class HypervergeEventServiceProvider extends ServiceProvider

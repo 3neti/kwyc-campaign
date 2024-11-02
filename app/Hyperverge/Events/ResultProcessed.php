@@ -2,11 +2,11 @@
 
 namespace App\Hyperverge\Events;
 
-use App\Models\Checkin;
-use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Broadcasting\Channel;
+use App\Models\Checkin;
 
 /**
  * Class ResultRetrieved

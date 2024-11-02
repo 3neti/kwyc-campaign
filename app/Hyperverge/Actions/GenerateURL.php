@@ -2,11 +2,11 @@
 
 namespace App\Hyperverge\Actions;
 
-use App\Hyperverge\Events\URLGenerated;
-use App\Hyperverge\Hyperverge;
 use Illuminate\Http\Client\ConnectionException;
-use Illuminate\Support\Facades\Http;
 use Lorisleiva\Actions\Concerns\AsAction;
+use App\Hyperverge\Events\URLGenerated;
+use Illuminate\Support\Facades\Http;
+use App\Hyperverge\Hyperverge;
 
 class GenerateURL
 {

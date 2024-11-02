@@ -3,14 +3,14 @@
 namespace App\Hyperverge\Actions;
 
 use App\Hyperverge\Enums\Action as HypervergeAction;
-use App\Hyperverge\Events\ResultRetrieved;
-use App\Hyperverge\Hyperverge;
-use App\Models\Checkin;
-use GuzzleHttp\Promise\PromiseInterface;
 use Illuminate\Http\Client\ConnectionException;
+use App\Hyperverge\Events\ResultRetrieved;
+use Lorisleiva\Actions\Concerns\AsAction;
+use GuzzleHttp\Promise\PromiseInterface;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
-use Lorisleiva\Actions\Concerns\AsAction;
+use App\Hyperverge\Hyperverge;
+use App\Models\Checkin;
 
 /**
  * Class RetrieveResult

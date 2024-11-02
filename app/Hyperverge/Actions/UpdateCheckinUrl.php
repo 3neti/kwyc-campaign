@@ -3,10 +3,10 @@
 namespace App\Hyperverge\Actions;
 
 use App\Hyperverge\Events\CheckinUrlUpdated;
-use App\Hyperverge\Events\URLGenerated;
-use App\Models\Checkin;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Lorisleiva\Actions\Concerns\AsAction;
+use App\Hyperverge\Events\URLGenerated;
+use App\Models\Checkin;
 
 class UpdateCheckinUrl implements ShouldQueue
 {
