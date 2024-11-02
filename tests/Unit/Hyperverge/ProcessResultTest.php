@@ -1,15 +1,17 @@
 <?php
 
-use App\Hyperverge\{ProcessResult, RetrieveResult, ResultProcessed};
+use App\Hyperverge\{Actions\ProcessResult, Actions\RetrieveResult, Events\ResultProcessed, Events\ResultRetrieved};
+use App\Hyperverge\Enums\Extracted;
+use App\Models\{Campaign, Checkin, ExtractedField};
 use Illuminate\Foundation\Testing\{RefreshDatabase, WithFaker};
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\{Event, Http, Notification};
-use App\Models\{Campaign, Checkin};
-
 
 uses(RefreshDatabase::class, WithFaker::class);
 
 beforeEach(function () {
-    Event::fake(ResultProcessed::class);
+//    Event::fake([ResultProcessed::class, ResultRetrieved::class]);
+    Event::fake(ResultRetrieved::class);
     Notification::fake();
     $this->faker = $this->makeFaker('en_PH');
     $this->uuid = $this->faker->uuid();
@@ -32,22 +34,24 @@ dataset('inputs', [
 ]);
 
 it('can process result', function () {
+    /*** arrange ***/
+    $details = Arr::get($this->checkin->data, 'result.results.0.apiResponse.result.details.0');
+
     /*** assert ***/
-//    expect($this->checkin->contact)->toBeNull();
+    expect($this->checkin->extracted_fields)->toHaveCount(0);
 
     /*** act ***/
     app(ProcessResult::class)->run($this->checkin);
+    $this->checkin->refresh();
 
     /*** assert ***/
-//    expect($this->checkin->contact)->toBeInstanceOf(Contact::class);
-//    tap(app(Contact::class)->where('id', $this->checkin->contact_id)->first(), function ($contact) {
-//        expect($this->data->getIdType(raw: false))->tobe($contact->checkin->data->getIdType(raw: false));
-//        expect($this->data->getFieldsExtracted(raw: false))->tobe($contact->checkin->data->getFieldsExtracted(raw: false));
-//        expect($this->data->getIdChecks())->tobe($contact->checkin->data->getIdChecks());
-//        expect($this->data->getSelfieChecks())->tobe($contact->checkin->data->getSelfieChecks());
-//        expect($this->data->getIdImageUrl())->tobe($contact->checkin->data->getIdImageUrl());
-//        expect($this->data->getSelfieImageUrl())->tobe($contact->checkin->data->getSelfieImageUrl());
-//    });
+    $this->checkin->extracted_fields->each(function (ExtractedField $extractedField) use ($details) {
+        $code = $extractedField->field;
+        $enum = Extracted::from($code);
+        $value = Arr::get($details, $enum->index());
+        expect($extractedField->value)->toBe($value);
+    });
+
     Event::dispatched(ResultProcessed::class, function ($event) {
         return $event->checkin->is($this->checkin);
     });

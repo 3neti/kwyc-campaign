@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Spatie\SchemalessAttributes\SchemalessAttributes;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\HasCheckinAttributes;
 use Illuminate\Support\Carbon;
@@ -22,6 +23,7 @@ use App\Traits\HasMeta;
  * @property Carbon $valid_until
  * @property SchemalessAttributes $meta
  * @property Campaign $campaign
+ * @property Collection $extracted_fields
  * @property bool $data_retrieved
  * @property bool $user_cancelled
  * @property bool $system_declined
@@ -48,5 +50,10 @@ class Checkin extends Model
     public function campaign(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Campaign::class);
+    }
+
+    public function extracted_fields(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(ExtractedField::class);
     }
 }

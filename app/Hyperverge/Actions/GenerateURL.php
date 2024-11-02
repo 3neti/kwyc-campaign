@@ -1,10 +1,12 @@
 <?php
 
-namespace App\Hyperverge;
+namespace App\Hyperverge\Actions;
 
+use App\Hyperverge\Events\URLGenerated;
+use App\Hyperverge\Hyperverge;
 use Illuminate\Http\Client\ConnectionException;
-use Lorisleiva\Actions\Concerns\AsAction;
 use Illuminate\Support\Facades\Http;
+use Lorisleiva\Actions\Concerns\AsAction;
 
 class GenerateURL
 {

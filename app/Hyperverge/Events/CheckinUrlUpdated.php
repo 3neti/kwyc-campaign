@@ -1,19 +1,18 @@
 <?php
 
-namespace App\Hyperverge;
+namespace App\Hyperverge\Events;
 
+use App\Models\Checkin;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
-use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Queue\SerializesModels;
-use App\Models\Checkin;
 
 /**
- * Class ResultRetrieved
+ * Class CheckinUrlUpdated
  *
  * @property Checkin $checkin
  */
-class ResultRetrieved
+class CheckinUrlUpdated
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 

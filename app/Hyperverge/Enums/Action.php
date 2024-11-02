@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Hyperverge;
+namespace App\Hyperverge\Enums;
+
+use App\Hyperverge\Hyperverge;
 
 enum Action
 {

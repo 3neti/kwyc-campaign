@@ -1,11 +1,11 @@
 <?php
 
-use App\Hyperverge\{Action, Hyperverge, ProcessResult, ResultRetrieved, RetrieveResult};
-use Illuminate\Support\Facades\{Event, Http, Notification, Queue};
-use Illuminate\Foundation\Testing\{RefreshDatabase, WithFaker};
-use Illuminate\Events\CallQueuedListener;
-use Illuminate\Http\Client\Request;
+use App\Hyperverge\{Actions\ProcessResult, Actions\RetrieveResult, Enums\Action, Events\ResultRetrieved, Hyperverge};
 use App\Models\{Campaign, Checkin};
+use Illuminate\Events\CallQueuedListener;
+use Illuminate\Foundation\Testing\{RefreshDatabase, WithFaker};
+use Illuminate\Http\Client\Request;
+use Illuminate\Support\Facades\{Event, Http, Notification, Queue};
 
 uses(RefreshDatabase::class, WithFaker::class);
 

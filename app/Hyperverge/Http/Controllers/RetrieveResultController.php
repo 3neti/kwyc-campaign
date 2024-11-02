@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Hyperverge;
+namespace App\Hyperverge\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;

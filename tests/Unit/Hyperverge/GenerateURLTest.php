@@ -1,10 +1,10 @@
 <?php
 
-use App\Hyperverge\{GenerateURL, Hyperverge, UpdateCheckinUrl, URLGenerated};
-use Illuminate\Foundation\Testing\{RefreshDatabase, WithFaker};
-use Illuminate\Support\Facades\{Event, Http, Queue};
+use App\Hyperverge\{Actions\GenerateURL, Actions\UpdateCheckinUrl, Events\URLGenerated, Hyperverge};
 use Illuminate\Events\CallQueuedListener;
+use Illuminate\Foundation\Testing\{RefreshDatabase, WithFaker};
 use Illuminate\Http\Client\Request;
+use Illuminate\Support\Facades\{Event, Http, Queue};
 
 uses(RefreshDatabase::class, WithFaker::class);
 

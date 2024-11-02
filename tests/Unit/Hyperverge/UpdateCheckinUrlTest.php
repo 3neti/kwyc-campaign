@@ -1,10 +1,10 @@
 <?php
 
-use Illuminate\Foundation\Testing\{RefreshDatabase, WithFaker};
-use App\Hyperverge\{CheckinUrlUpdated, UpdateCheckinUrl};
-use Illuminate\Support\Facades\Notification;
-use Illuminate\Support\Facades\Event;
+use App\Hyperverge\{Actions\UpdateCheckinUrl, Events\CheckinUrlUpdated};
 use App\Models\{Campaign, Checkin};
+use Illuminate\Foundation\Testing\{RefreshDatabase, WithFaker};
+use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Notification;
 
 
 uses(RefreshDatabase::class, WithFaker::class);

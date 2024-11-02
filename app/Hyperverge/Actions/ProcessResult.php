@@ -1,11 +1,14 @@
 <?php
 
-namespace App\Hyperverge;
+namespace App\Hyperverge\Actions;
 
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Lorisleiva\Actions\Concerns\AsAction;
-use Illuminate\Pipeline\Pipeline;
+use App\Hyperverge\Events\ResultProcessed;
+use App\Hyperverge\Events\ResultRetrieved;
+use App\Hyperverge\Pipes\PersistExtractedFields;
 use App\Models\Checkin;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Pipeline\Pipeline;
+use Lorisleiva\Actions\Concerns\AsAction;
 
 class ProcessResult implements ShouldQueue
 {
@@ -17,7 +20,9 @@ class ProcessResult implements ShouldQueue
     {
         $checkin = $this->pipeline
             ->send($checkin)
-            ->through([])
+            ->through([
+                PersistExtractedFields::class
+            ])//TODO: add processes e.g., addIdImage, addSelfieImage
             ->thenReturn();
         $checkin->save();
         ResultProcessed::dispatch($checkin);

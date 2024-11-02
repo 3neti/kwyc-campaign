@@ -2,6 +2,8 @@
 
 namespace App\Hyperverge;
 
+use App\Hyperverge\Enums\Action;
+
 class Hyperverge
 {
     public static string $workflowId = '';

@@ -1,15 +1,16 @@
 <?php
 
-namespace App\Hyperverge;
+namespace App\Hyperverge\Actions;
 
+use App\Hyperverge\Enums\Action as HypervergeAction;
+use App\Hyperverge\Events\ResultRetrieved;
+use App\Hyperverge\Hyperverge;
+use App\Models\Checkin;
 use GuzzleHttp\Promise\PromiseInterface;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Client\Response;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Http;
 use Lorisleiva\Actions\Concerns\AsAction;
-use App\Models\Checkin;
-use App\Hyperverge\Action as HypervergeAction;
 
 /**
  * Class RetrieveResult
@@ -37,7 +38,7 @@ class RetrieveResult
         );
         if ($response->successful()) {
             $checkin->update([
-                'data' => $response->body(),
+                'data' => json_decode($response->body(), true),
                 'data_retrieved_at' => now()
             ]);
             $checkin->save();
