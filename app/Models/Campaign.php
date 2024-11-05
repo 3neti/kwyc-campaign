@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Spatie\SchemalessAttributes\SchemalessAttributes;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use App\Traits\{HasCampaignAttributes, HasMeta};
+use Illuminate\Notifications\Notification;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 
@@ -29,12 +31,14 @@ use Illuminate\Support\Carbon;
  *
  * @method int getKey()
  * @method static mixed find($id, $columns = ['*'])
+ * @method void notify($instance)
  */
 class Campaign extends Model
 {
     /** @use HasFactory<\Database\Factories\CampaignFactory> */
     use HasCampaignAttributes;
     use HasFactory;
+    use Notifiable;
     use HasUuids;
     use HasMeta;
 
@@ -55,5 +59,20 @@ class Campaign extends Model
     public function checkins(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(Checkin::class);
+    }
+
+    public function routeNotificationForEngageSpark(): string
+    {
+        return $this->mobile;
+    }
+
+    public function routeNotificationForWebhook(): string
+    {
+        return $this->webhook;
+    }
+
+    public function routeNotificationForSlack(Notification $notification): mixed
+    {
+        return '#kwyc-campaign';
     }
 }

@@ -2,21 +2,23 @@
 
 namespace App\Providers;
 
+use NotificationChannels\Webhook\WebhookChannel;
+use Illuminate\Notifications\ChannelManager;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\ServiceProvider;
+use GuzzleHttp\Client;
 
 class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Register any application services.
-     */
     public function register(): void
     {
-        //
+        Notification::resolved(function (ChannelManager $service) {
+            $service->extend('webhook', function ($app) {
+                return new WebhookChannel($app->make(Client::class));
+            });
+        });
     }
 
-    /**
-     * Bootstrap any application services.
-     */
     public function boot(): void
     {
         //

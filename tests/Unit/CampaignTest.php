@@ -2,6 +2,8 @@
 
 use Illuminate\Foundation\Testing\{RefreshDatabase, WithFaker};
 use App\Models\{Agent, Campaign, Checkin, Organization};
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\CheckinFeedback;
 use Illuminate\Support\Carbon;
 
 uses(RefreshDatabase::class, WithFaker::class);
@@ -72,4 +74,24 @@ test('campaign has many checkins', function () {
     expect($campaign->checkins)->toHaveCount(3);
     $checkin = Checkin::find($id);
     expect($checkin->url)->toBe($url);
+});
+
+test('campaign has seeder', function () {
+    expect(Campaign::all())->toHaveCount(0);
+    $this->seed(\Database\Seeders\CampaignSeeder::class);
+    expect(Campaign::all())->toHaveCount(1);
+    $campaign = Campaign::where('email', 'devops@joy-nostalg.com')->first();
+    expect($campaign)->toBeInstanceOf(Campaign::class);
+});
+
+
+test('campaign is notifiable', function () {
+    Notification::fake();
+    $email = 'devops@joy-nostalg.com';
+    $mobile = '09173011987';
+    $checkin = Checkin::factory()->forCampaign(compact('email', 'mobile'))->create();
+    $checkin->campaign->notify(new CheckinFeedback($checkin));
+    Notification::assertSentTo($checkin->campaign, function (CheckinFeedback $checkinFeedback) use ($checkin) {
+        return $checkinFeedback->checkin->is($checkin);
+    });
 });
