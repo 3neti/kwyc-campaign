@@ -2,8 +2,8 @@
 
 namespace App\Hyperverge\Actions;
 
+use App\Hyperverge\Pipes\{PersistExtractedFields, PersistMedia};
 use App\Hyperverge\Events\{ResultProcessed, ResultRetrieved};
-use App\Hyperverge\Pipes\PersistExtractedFields;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Lorisleiva\Actions\Concerns\AsAction;
 use Illuminate\Pipeline\Pipeline;
@@ -20,7 +20,8 @@ class ProcessResult implements ShouldQueue
         $checkin = $this->pipeline
             ->send($checkin)
             ->through([
-                PersistExtractedFields::class
+                PersistExtractedFields::class,
+                PersistMedia::class
             ])//TODO: add processes e.g., addIdImage, addSelfieImage
             ->thenReturn();
         $checkin->save();

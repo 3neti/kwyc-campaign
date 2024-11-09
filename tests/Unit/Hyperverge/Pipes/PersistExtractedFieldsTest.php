@@ -30,7 +30,7 @@ beforeEach(function () {
 
 test('persist extracted fields works', function () {
     /*** arrange ***/
-    $details = Arr::get($this->checkin->data, Checkin::DATA_INDEX);
+    $details = Arr::get($this->checkin->data, Checkin::FIELDS_EXTRACTED_INDEX);
 
     /*** assert ***/
     expect($this->checkin->extracted_fields->count())->toBe(0);

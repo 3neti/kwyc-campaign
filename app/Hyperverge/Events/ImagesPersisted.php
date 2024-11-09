@@ -8,11 +8,11 @@ use Illuminate\Queue\SerializesModels;
 use App\Models\Checkin;
 
 /**
- * Class ExtractedFieldsPersisted
+ * Class ImagesPersisted
  *
  * @property Checkin $checkin
  */
-class ExtractedFieldsPersisted
+class ImagesPersisted
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 

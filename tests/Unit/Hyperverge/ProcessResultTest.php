@@ -1,9 +1,9 @@
 <?php
 
 use App\Hyperverge\{Actions\ProcessResult, Actions\RetrieveResult, Events\ResultProcessed, Events\ResultRetrieved};
+use App\Hyperverge\Events\{ExtractedFieldsPersisted, ImagesPersisted};
 use Illuminate\Foundation\Testing\{RefreshDatabase, WithFaker};
 use Illuminate\Support\Facades\{Event, Http, Notification};
-use App\Hyperverge\Events\ExtractedFieldsPersisted;
 use App\Models\{Campaign, Checkin};
 
 uses(RefreshDatabase::class, WithFaker::class);
@@ -33,13 +33,16 @@ dataset('inputs', [
 
 it('can process pipelines', function () {
     /*** arrange ***/
-    Event::fake(ExtractedFieldsPersisted::class);
+    Event::fake([ExtractedFieldsPersisted::class, ImagesPersisted::class]);
 
     /*** act ***/
     app(ProcessResult::class)->run($this->checkin);
 
     /*** assert ***/
     Event::assertDispatched(ExtractedFieldsPersisted::class, function ($event) {
+        return $event->checkin->is($this->checkin);
+    });
+    Event::assertDispatched(ImagesPersisted::class, function ($event) {
         return $event->checkin->is($this->checkin);
     });
     Event::dispatched(ResultProcessed::class, function ($event) {

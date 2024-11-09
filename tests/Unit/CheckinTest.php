@@ -2,12 +2,16 @@
 
 use Illuminate\Foundation\Testing\{RefreshDatabase, WithFaker};
 use App\Models\{Agent, Campaign, Checkin, Organization};
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Illuminate\Support\Carbon;
 
 uses(RefreshDatabase::class, WithFaker::class);
 
 test('checkin has attributes', function () {
-    $checkin = Checkin::factory()->forCampaign()->create();
+    $checkin = Checkin::factory()->forCampaign()->create([
+        'idImage' => 'https://jn-img.enclaves.ph/Test/idImage.jpg',
+        'selfieImage' => 'https://jn-img.enclaves.ph/Test/selfieImage.jpg',
+    ]);
     expect($checkin->id)->toBeUuid();
     expect($checkin->url)->toBeString();
     expect($checkin->data)->toBeArray();
@@ -15,6 +19,8 @@ test('checkin has attributes', function () {
     expect($checkin->user_cancelled_at)->toBeNull();
     expect($checkin->system_declined_at)->toBeNull();
     expect($checkin->valid_until)->toBeNull();
+    expect($checkin->idImage)->toBeInstanceOf(Media::class);
+    expect($checkin->selfieImage)->toBeInstanceOf(Media::class);
 });
 
 test('checkin has a boolean dates', function () {

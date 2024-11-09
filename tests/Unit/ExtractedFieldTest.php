@@ -24,11 +24,12 @@ test('extracted fields belongs to checkin', function () {
     $checkin->save();
     $checkin->refresh();
     expect($checkin->extracted_fields)->toHaveCount(3);
+    $checkin = Checkin::factory()->forCampaign()->create();
     $checkin->extracted_fields()->createMany([
         ['field' => $this->faker->word(), 'value' => $this->faker->name()],
         ['field' => $this->faker->word(), 'value' => $this->faker->name()]
     ]);
     $checkin->save();
     $checkin->refresh();
-    expect($checkin->extracted_fields)->toHaveCount(5);
+    expect($checkin->extracted_fields)->toHaveCount(2);
 });

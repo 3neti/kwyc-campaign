@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('extracted_fields', function (Blueprint $table) {
-            $table->foreignUuid('checkin_id');
+            $table->foreignUuid('checkin_id')->constrained()->onUpdate('cascade')->onDelete('cascade');;
             $table->string('field')->index();
             $table->string('value');
             $table->primary(['checkin_id', 'field']);
