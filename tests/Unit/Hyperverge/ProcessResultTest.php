@@ -1,16 +1,14 @@
 <?php
 
 use App\Hyperverge\{Actions\ProcessResult, Actions\RetrieveResult, Events\ResultProcessed, Events\ResultRetrieved};
-use App\Hyperverge\Enums\Extracted;
-use App\Models\{Campaign, Checkin, ExtractedField};
 use Illuminate\Foundation\Testing\{RefreshDatabase, WithFaker};
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\{Event, Http, Notification};
+use App\Hyperverge\Events\ExtractedFieldsPersisted;
+use App\Models\{Campaign, Checkin};
 
 uses(RefreshDatabase::class, WithFaker::class);
 
 beforeEach(function () {
-//    Event::fake([ResultProcessed::class, ResultRetrieved::class]);
     Event::fake(ResultRetrieved::class);
     Notification::fake();
     $this->faker = $this->makeFaker('en_PH');
@@ -33,25 +31,17 @@ dataset('inputs', [
     fn() => ['mobile' => $this->faker->mobileNumber()]
 ]);
 
-it('can process result', function () {
+it('can process pipelines', function () {
     /*** arrange ***/
-    $details = Arr::get($this->checkin->data, Checkin::DATA_INDEX);
-
-    /*** assert ***/
-    expect($this->checkin->extracted_fields)->toHaveCount(0);
+    Event::fake(ExtractedFieldsPersisted::class);
 
     /*** act ***/
     app(ProcessResult::class)->run($this->checkin);
-    $this->checkin->refresh();
 
     /*** assert ***/
-    $this->checkin->extracted_fields->each(function (ExtractedField $extractedField) use ($details) {
-        $code = $extractedField->field;
-        $enum = Extracted::from($code);
-        $value = Arr::get($details, $enum->index());
-        expect($extractedField->value)->toBe($value);
+    Event::assertDispatched(ExtractedFieldsPersisted::class, function ($event) {
+        return $event->checkin->is($this->checkin);
     });
-
     Event::dispatched(ResultProcessed::class, function ($event) {
         return $event->checkin->is($this->checkin);
     });

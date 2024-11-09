@@ -2,6 +2,7 @@
 
 namespace App\Hyperverge\Pipes;
 
+use App\Hyperverge\Events\ExtractedFieldsPersisted;
 use App\Hyperverge\Enums\Extracted;
 use Illuminate\Support\Arr;
 use App\Models\Checkin;
@@ -20,6 +21,7 @@ class PersistExtractedFields
             if (!$value) continue;
             $checkin->extracted_fields()->create(compact('field', 'value'));
         }
+        ExtractedFieldsPersisted::dispatchIf($checkin->fresh()->extracted_fields->count() > 0, $checkin);
 
         return $next($checkin);
     }
