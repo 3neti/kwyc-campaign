@@ -13,7 +13,7 @@ class PersistExtractedFields
     {
 //        dd(Arr::get($checkin->data, 'result.results.0.apiResponse.result.details.0'));
 //        dd(Arr::get($checkin->data, 'result.results.2.moduleId'));
-        $details = Arr::get($checkin->data, 'result.results.0.apiResponse.result.details.0');
+        $details = Arr::get($checkin->data, Checkin::DATA_INDEX);
         foreach (Extracted::cases() as $extracted) {
             $field = $extracted->value;
             $value = Arr::get($details, $extracted->index());

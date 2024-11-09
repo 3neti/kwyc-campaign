@@ -39,6 +39,8 @@ class Checkin extends Model
     use HasUuids;
     use HasMeta;
 
+    const DATA_INDEX = 'result.results.0.apiResponse.result.details.0';
+
     protected $fillable = [
         'url', 'data', 'data_retrieved_at'
     ];

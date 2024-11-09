@@ -35,7 +35,7 @@ dataset('inputs', [
 
 it('can process result', function () {
     /*** arrange ***/
-    $details = Arr::get($this->checkin->data, 'result.results.0.apiResponse.result.details.0');
+    $details = Arr::get($this->checkin->data, Checkin::DATA_INDEX);
 
     /*** assert ***/
     expect($this->checkin->extracted_fields)->toHaveCount(0);
