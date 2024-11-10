@@ -2,6 +2,7 @@
 
 use Illuminate\Foundation\Testing\{RefreshDatabase, WithFaker};
 use App\Models\{Agent, Campaign, Organization, Team};
+use App\Data\OrganizationData;
 
 uses(RefreshDatabase::class, WithFaker::class);
 
@@ -25,4 +26,10 @@ test('organization has many campaigns', function () {
     expect($organization->campaigns)->toHaveCount(2);
 });
 
+test('organization has data', function () {
+    $organization = Organization::factory()->create();
+    $data = OrganizationData::fromModel($organization);
+    expect($data->id)->toBe($organization->id);
+    expect($data->name)->toBe($organization->name);
+});
 

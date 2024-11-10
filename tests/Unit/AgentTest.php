@@ -2,6 +2,7 @@
 
 use Illuminate\Foundation\Testing\{RefreshDatabase, WithFaker};
 use App\Models\{Agent, User};
+use App\Data\AgentData;
 
 uses(RefreshDatabase::class, WithFaker::class);
 
@@ -19,4 +20,11 @@ test('agent has user type agent', function () {
     expect($user->type)->toBeNull();
     $agent = Agent::factory()->create();
     expect($agent->type)->toBe('agent');
+});
+
+test('agent has data', function () {
+    $agent = Agent::factory()->create();
+    $data = AgentData::fromModel($agent);
+    expect($data->id)->toBe($agent->id);
+    expect($data->name)->toBe($agent->name);
 });

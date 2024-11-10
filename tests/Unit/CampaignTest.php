@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Foundation\Testing\{RefreshDatabase, WithFaker};
+use App\Data\{AgentData, CampaignData, OrganizationData};
 use App\Models\{Agent, Campaign, Checkin, Organization};
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\CheckinFeedback;
@@ -100,4 +101,13 @@ test('campaign is notifiable', function () {
     Notification::assertSentTo($checkin->campaign, function (CheckinFeedback $checkinFeedback) use ($checkin) {
         return $checkinFeedback->checkin->is($checkin);
     });
+});
+
+test('campaign has data', function () {
+    $campaign = Campaign::factory()->forOrganization()->forAgent()->create();
+    $data = CampaignData::fromModel($campaign);
+    expect($data->code)->toBe($campaign->id);
+    expect($data->name)->toBe($campaign->name);
+    expect($data->organization->toArray())->toBe(OrganizationData::fromModel($campaign->organization)->toArray());
+    expect($data->agent->toArray())->toBe(AgentData::fromModel($campaign->agent)->toArray());
 });

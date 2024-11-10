@@ -12,6 +12,8 @@ use Parental\HasParent;
  *
  * @property int $id
  * @property string $name
+ * @property string $email
+ * @property string $mobile
  * @property int $current_team_id
  * @property Collection $organizations
  * @property Collection $ownedOrganizations
