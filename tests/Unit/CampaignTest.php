@@ -111,3 +111,10 @@ test('campaign has data', function () {
     expect($data->organization->toArray())->toBe(OrganizationData::fromModel($campaign->organization)->toArray());
     expect($data->agent->toArray())->toBe(AgentData::fromModel($campaign->agent)->toArray());
 });
+
+test('campaign has input attributes', function () {
+    $campaign = Campaign::factory()->forOrganization()->forAgent()->create();
+    $campaign->inputAttributes = ['email', 'mobile'];
+    $campaign = Campaign::find($campaign->id);
+    expect($campaign->inputAttributes)->toBe(['email', 'mobile']);
+});
