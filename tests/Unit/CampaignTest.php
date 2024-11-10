@@ -76,6 +76,12 @@ test('campaign has many checkins', function () {
     expect($checkin->url)->toBe($url);
 });
 
+test('campaign can create a checkin without params', function () {
+    $campaign = Campaign::factory()->create();
+    $checkin = $campaign->checkins()->create();
+    expect($checkin)->toBeInstanceOf(Checkin::class);
+});
+
 test('campaign has seeder', function () {
     expect(Campaign::all())->toHaveCount(0);
     $this->seed(\Database\Seeders\CampaignSeeder::class);

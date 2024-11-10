@@ -22,7 +22,7 @@ use Parental\HasParent;
  *
  * @method int getKey()
  */
-class Agent extends User implements CampaignUser
+class System extends User implements CampaignUser
 {
     use HasOrganizations;
     use HasCampaigns;

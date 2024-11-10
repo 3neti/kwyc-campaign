@@ -36,6 +36,10 @@ class Team extends JetstreamTeam
         'deleted' => TeamDeleted::class,
     ];
 
+    protected $childTypes = [
+        'organization' => Organization::class,
+    ];
+
     /**
      * Get the attributes that should be cast.
      *

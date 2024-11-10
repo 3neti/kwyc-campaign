@@ -59,6 +59,7 @@ class User extends Authenticatable
 
     protected $childTypes = [
         'agent' => Agent::class,
+        'system' => System::class
     ];
 
     /**

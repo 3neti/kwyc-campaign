@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Spatie\SchemalessAttributes\SchemalessAttributes;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use App\Traits\{HasCampaignAttributes, HasMeta};
@@ -74,5 +75,10 @@ class Campaign extends Model
     public function routeNotificationForSlack(Notification $notification): mixed
     {
         return '#kwyc-campaign';
+    }
+
+    public function team(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Team::class);
     }
 }

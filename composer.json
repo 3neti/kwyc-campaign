@@ -11,6 +11,7 @@
         "laravel-notification-channels/webhook": "^2.6",
         "laravel/framework": "^11.9",
         "laravel/jetstream": "^5.3",
+        "laravel/prompts": "^0.3.1",
         "laravel/sanctum": "^4.0",
         "laravel/slack-notification-channel": "^3.4",
         "laravel/tinker": "^2.9",

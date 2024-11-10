@@ -38,6 +38,7 @@ use Illuminate\Support\Carbon;
  * @method FileAdder addMediaFromUrl(string $url, array|string ...$allowedMimeTypes)
  * @method FileAdder usingName(string $name)
  * @method FileAdder toMediaCollection(string $collectionName = 'default', string $diskName = '')
+ * @method bool updateOrFail(array $attributes = [], array $options = [])
  */
 class Checkin extends Model implements HasMedia
 {

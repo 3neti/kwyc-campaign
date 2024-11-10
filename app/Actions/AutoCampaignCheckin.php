@@ -2,7 +2,9 @@
 
 namespace App\Actions;
 
+use App\Models\Checkin;
 use Lorisleiva\Actions\Concerns\AsAction;
+use App\Hyperverge\Actions\GenerateURL;
 use Lorisleiva\Actions\ActionRequest;
 use App\Models\Campaign;
 
@@ -10,13 +12,23 @@ class AutoCampaignCheckin
 {
     use AsAction;
 
-    public function handle(Campaign $campaign)
+    /**
+     * @throws \Throwable
+     */
+    public function handle(Campaign $campaign): Checkin
     {
-        return $campaign->name;
+        $checkin = $campaign->checkins()->create();
+        $checkin->updateOrFail([
+            'url' => GenerateURL::run($checkin->id)
+        ]);
+
+        return $checkin;
     }
 
     public function asController(ActionRequest $request, Campaign $campaign)
     {
-        return $this->handle($campaign);
+        $checkin = $this->handle($campaign);
+
+        return inertia()->location($checkin->url);
     }
 }
