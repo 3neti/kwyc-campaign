@@ -13,6 +13,7 @@ class PersistExtractedFields
     public function handle(Checkin $checkin, Closure $next)
     {
         $details = Arr::get($checkin->data, Checkin::FIELDS_EXTRACTED_INDEX);
+
         foreach (Extracted::cases() as $extracted) {
             $field = $extracted->value;
             $value = Arr::get($details, $extracted->index());
