@@ -22,4 +22,15 @@ return [
         'allowed' => array_filter(explode(',', env('ALLOWED_CHANNELS', 'database,slack'))),
         CheckinFeedback::class => array_filter(explode(',', env('CHECKIN_FEEDBACK_CHANNELS', 'mail,engage_spark,webhook,slack'))),
     ],
+    'defaults' => [
+        'checkin' => [
+            'valid_until_increment' =>  env('DEFAULT_CHECKIN_VALID_UNTIL_INCREMENT',  '1 hour'),
+//            'price' => env('DEFAULT_CHECKIN_PRICE',  20), //major units
+//            'persist_id_marks' => env('DEFAULT_PERSIST_ID_MARKS',  true),
+//            'response' => [
+//                'use_media' => env('DEFAULT_CHECKIN_RESPONSE_USE_MEDIA',  false),
+//                'exposure' => env('DEFAULT_CHECKIN_RESPONSE_EXPOSURE',  10 * 1000)//milliseconds
+//            ],
+        ],
+    ],
 ];

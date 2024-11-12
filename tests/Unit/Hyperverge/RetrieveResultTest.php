@@ -70,18 +70,25 @@ it('fires process result action', function (Campaign $campaign) {
     $checkin = $campaign->checkins[0];
     $transactionId = $checkin->id;
     $json = mockJsonResponseRetrieveResult($transactionId);
-
     $action = app(RetrieveResult::class);
     Http::fake([
         $action->hyperverge->url() => Http::response($json, 200)
     ]);
 
+    /*** assert ***/
+    expect($checkin->data_retrieved)->toBeFalse();
+    expect($checkin->valid)->toBeFalse();
+
     /*** act ***/
     $action->run($checkin);
+
+    /*** assert ***/
     Queue::assertPushed(
         CallQueuedListener::class,
         function ($listener) {
             return $listener->class === ProcessResult::class;
         }
     );
+    expect($checkin->data_retrieved)->toBeTrue();
+    expect($checkin->valid)->toBeTrue();
 })->with('checkin');

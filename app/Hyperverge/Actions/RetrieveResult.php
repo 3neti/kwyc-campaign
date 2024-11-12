@@ -5,6 +5,7 @@ namespace App\Hyperverge\Actions;
 use App\Hyperverge\Enums\Action as HypervergeAction;
 use Illuminate\Http\Client\ConnectionException;
 use App\Hyperverge\Events\ResultRetrieved;
+use Illuminate\Support\Carbon;
 use Lorisleiva\Actions\Concerns\AsAction;
 use GuzzleHttp\Promise\PromiseInterface;
 use Illuminate\Http\Client\Response;
@@ -39,8 +40,9 @@ class RetrieveResult
         if ($response->successful()) {
             $checkin->update([
                 'data' => json_decode($response->body(), true),
-                'data_retrieved_at' => now()
+                'valid_until' => $this->getValidUntil(now())
             ]);
+            $checkin->data_retrieved = true;
             $checkin->save();
             ResultRetrieved::dispatch($checkin);
             $success = true;
@@ -60,5 +62,12 @@ class RetrieveResult
                 url: $this->hyperverge->url(),
                 data: $this->hyperverge->body($transactionId)
             );
+    }
+
+    protected function getValidUntil(Carbon $datetime): Carbon
+    {
+        $increment = $increment ?? config('kwyc-campaign.defaults.checkin.valid_until_increment');
+
+        return $datetime->add($increment);
     }
 }

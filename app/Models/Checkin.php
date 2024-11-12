@@ -3,13 +3,12 @@
 namespace App\Models;
 
 use Spatie\MediaLibrary\{HasMedia, MediaCollections\FileAdder, MediaCollections\Models\Media};
+use App\Traits\{HasCheckinAttributes, HasCheckinMedia, HasMeta};
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Spatie\SchemalessAttributes\SchemalessAttributes;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Collection;
-use App\Traits\{HasCheckinMedia, HasMeta};
 use Illuminate\Database\Eloquent\Model;
-use App\Traits\HasCheckinAttributes;
 use Illuminate\Support\Carbon;
 
 /**
@@ -28,6 +27,7 @@ use Illuminate\Support\Carbon;
  * @property bool $data_retrieved
  * @property bool $user_cancelled
  * @property bool $system_declined
+ * @property bool $valid
  * @property array $media
  * @property array $uploads
  * @property Media $idImage
@@ -54,11 +54,12 @@ class Checkin extends Model implements HasMedia
     const FACE_MATCH_INDEX = 'result.results.2';
 
     protected $fillable = [
-        'url', 'data', 'data_retrieved_at'
+        'url', 'data', 'valid_until'
     ];
 
     protected $casts = [
-        'data' => 'array'
+        'data' => 'array',
+        'data_retrieved_at' => 'datetime',
     ];
 
     public function campaign(): \Illuminate\Database\Eloquent\Relations\BelongsTo

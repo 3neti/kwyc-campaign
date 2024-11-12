@@ -42,4 +42,10 @@ trait HasCheckinAttributes
         return $this->getAttribute('system_declined_at')
             && $this->getAttribute('system_declined_at') <= now();
     }
+
+    public function getValidAttribute(): bool
+    {
+        return $this->getAttribute('valid_until')
+            && $this->getAttribute('valid_until') > now();
+    }
 }
