@@ -2,11 +2,10 @@
 
 namespace App\Actions;
 
-use App\Models\Checkin;
 use Lorisleiva\Actions\Concerns\AsAction;
 use App\Hyperverge\Actions\GenerateURL;
 use Lorisleiva\Actions\ActionRequest;
-use App\Models\Campaign;
+use App\Models\{Campaign, Checkin};
 
 class AutoCampaignCheckin
 {
@@ -19,14 +18,17 @@ class AutoCampaignCheckin
     {
         $checkin = $campaign->checkins()->create();
         $checkin->updateOrFail([
-            'url' => GenerateURL::run($checkin->id),
+            'url' => GenerateURL::run($checkin),
             'inputs' => $inputs
         ]);
 
         return $checkin;
     }
 
-    public function asController(ActionRequest $request, Campaign $campaign)
+    /**
+     * @throws \Throwable
+     */
+    public function asController(ActionRequest $request, Campaign $campaign): \Symfony\Component\HttpFoundation\Response
     {
         $checkin = $this->handle($campaign);
 

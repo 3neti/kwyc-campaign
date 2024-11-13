@@ -7,6 +7,7 @@ use Lorisleiva\Actions\Concerns\AsAction;
 use App\Hyperverge\Events\URLGenerated;
 use Illuminate\Support\Facades\Http;
 use App\Hyperverge\Hyperverge;
+use App\Models\Checkin;
 
 class GenerateURL
 {
@@ -17,8 +18,9 @@ class GenerateURL
     /**
      * @throws ConnectionException
      */
-    public function handle(string $transactionId, string $workflowId = null)
+    public function handle(Checkin|string $checkin, string $workflowId = null)
     {
+        $transactionId = $checkin instanceof Checkin ? $checkin->id : $checkin;
         $response = Http::withHeaders(headers: $this->hyperverge->headers())
             ->post(
                 url: $this->hyperverge->url(),
