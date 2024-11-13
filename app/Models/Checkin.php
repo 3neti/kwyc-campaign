@@ -4,12 +4,14 @@ namespace App\Models;
 
 use Spatie\MediaLibrary\{HasMedia, MediaCollections\FileAdder, MediaCollections\Models\Media};
 use App\Traits\{HasCheckinAttributes, HasCheckinMedia, HasMeta};
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Spatie\SchemalessAttributes\SchemalessAttributes;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
+
 
 /**
  * Class Checkin
@@ -32,6 +34,7 @@ use Illuminate\Support\Carbon;
  * @property array $uploads
  * @property Media $idImage
  * @property Media $selfieImage
+ * @property SchemalessAttributes $inputs
  *
  * @method int getKey()
  * @method static mixed find($id, $columns = ['*'])
@@ -54,12 +57,13 @@ class Checkin extends Model implements HasMedia
     const FACE_MATCH_INDEX = 'result.results.2';
 
     protected $fillable = [
-        'url', 'data', 'valid_until'
+        'url', 'data', 'valid_until', 'inputs'
     ];
 
     protected $casts = [
         'data' => 'array',
         'data_retrieved_at' => 'datetime',
+        'inputs' => \Spatie\SchemalessAttributes\Casts\SchemalessAttributes::class,
     ];
 
     public function campaign(): \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -70,5 +74,10 @@ class Checkin extends Model implements HasMedia
     public function extracted_fields(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(ExtractedField::class);
+    }
+
+    public function scopeWithInputs(): Builder
+    {
+        return $this->inputs->modelScope();
     }
 }

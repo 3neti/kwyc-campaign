@@ -15,11 +15,12 @@ class AutoCampaignCheckin
     /**
      * @throws \Throwable
      */
-    public function handle(Campaign $campaign): Checkin
+    public function handle(Campaign $campaign,  array $inputs = []): Checkin
     {
         $checkin = $campaign->checkins()->create();
         $checkin->updateOrFail([
-            'url' => GenerateURL::run($checkin->id)
+            'url' => GenerateURL::run($checkin->id),
+            'inputs' => $inputs
         ]);
 
         return $checkin;

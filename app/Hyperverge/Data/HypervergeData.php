@@ -3,7 +3,8 @@
 namespace App\Hyperverge\Data;
 
 use Spatie\LaravelData\{Data, Optional};
-use Illuminate\Support\{Arr, Str};
+use App\Hyperverge\Enums\IdType;
+use Illuminate\Support\Arr;
 
 class HypervergeData extends Data
 {
@@ -31,6 +32,24 @@ class HypervergeData extends Data
             faceMatchData: FaceMatchModuleData::fromArray($data)
         );
     }
+
+    public static function fromArray(array $array): self
+    {
+        return static::fromJson(json_encode($array));
+    }
+
+    public function with(): array
+    {
+        return [
+            'idType' => IdType::tryFrom($this->idModuleData->idCardData->idType)?->name() ?? 'Unknown',
+            'fieldsExtracted' => array_filter($this->idModuleData->fieldsExtractedData->toArray()),
+            'idImageUrl' => $this->idModuleData->imageUrl,
+            'selfieImageUrl' => $this->selfieModuleData->imageUrl,
+            'idChecks' => $this->idModuleData->qualityChecksData->toArray(),
+            'selfieChecks' => $this->selfieModuleData->qualityChecksData->toArray(),
+            'by' => 'lester@hurtado.ph',
+        ];
+    }
 }
 
 class WorkflowData extends Data
@@ -53,7 +72,8 @@ class IdModuleData extends Data
         public string $croppedImageUrl,
         public string $imageUrl,
         public IdCardData $idCardData,
-        public FieldsExtractedData $fieldsExtractedData
+        public FieldsExtractedData $fieldsExtractedData,
+        public QualityChecksData $qualityChecksData
     ) {}
 
     public static function fromArray(array $data): self
@@ -68,7 +88,8 @@ class IdModuleData extends Data
             croppedImageUrl: Arr::get($data, 'result.results.0.croppedImageUrl'),
             imageUrl: Arr::get($data, 'result.results.0.imageUrl'),
             idCardData: IdCardData::fromArray($data),
-            fieldsExtractedData: FieldsExtractedData::from(Arr::get($data, 'result.results.0.apiResponse.result.details.0.fieldsExtracted'))
+            fieldsExtractedData: FieldsExtractedData::from(Arr::get($data, 'result.results.0.apiResponse.result.details.0.fieldsExtracted')),
+            qualityChecksData: QualityChecksData::from(Arr::get($data, 'result.results.0.apiResponse.result.details.0.qualityChecks'))
         );
     }
 }
