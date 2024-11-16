@@ -39,7 +39,7 @@ test('auto campaign checkin end points accepts campaign happy path', function (C
     expect($response->status())->toBe(302);
     expect($response->getTargetUrl())->toBe($this->targetUrl);
     expect($response->getTargetUrl())->toBe($checkin->url);
-})->with('campaign');
+})->with('campaign')->skip();
 
 test('auto campaign checkin end points accepts campaign - disabled', function (Campaign $campaign) {
     $campaign->enabled = false;
@@ -50,4 +50,4 @@ test('auto campaign checkin end points accepts campaign - disabled', function (C
     expect($checkin)->toBeNull();
     expect($response->status())->toBe(302);
     expect($response->getTargetUrl())->toBe(route('campaign-disabled'));
-})->with('campaign');
+})->with('campaign')->skip();

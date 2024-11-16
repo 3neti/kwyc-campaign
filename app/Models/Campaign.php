@@ -50,10 +50,10 @@ class Campaign extends Model
         'name', 'email', 'mobile', 'webhook'
     ];
 
-    public function agent(): \Illuminate\Database\Eloquent\Relations\BelongsTo
-    {
-        return $this->belongsTo(Agent::class, 'user_id');
-    }
+//    public function agent(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+//    {
+//        return $this->belongsTo(Agent::class, 'user_id');
+//    }
 
     public function organization(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
@@ -95,5 +95,10 @@ class Campaign extends Model
         $this->syncTagsWithType(tags: $value, type: Additional::tagType);
 
         return $this;
+    }
+
+    public function agent(): \Illuminate\Database\Eloquent\Relations\MorphTo
+    {
+        return $this->morphTo();
     }
 }

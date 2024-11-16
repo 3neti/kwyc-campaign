@@ -24,8 +24,13 @@ class Organization extends Team
         return $this->belongsTo(Agent::class, 'user_id', 'id');
     }
 
-    public function campaigns(): \Illuminate\Database\Eloquent\Relations\HasMany
+//    public function campaigns(): \Illuminate\Database\Eloquent\Relations\HasMany
+//    {
+//        return $this->hasMany(Campaign::class);
+//    }
+
+    public function campaigns()
     {
-        return $this->hasMany(Campaign::class);
+        return $this->morphMany(Campaign::class, 'agent');
     }
 }

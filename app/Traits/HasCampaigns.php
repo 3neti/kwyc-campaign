@@ -44,6 +44,15 @@ trait HasCampaigns
         return $this->id == $campaign->{$this->getForeignKey()};
     }
 
+    public function morphsToCampaign($campaign): bool
+    {
+        if (is_null($campaign)) {
+            return false;
+        }
+
+        return $this->getMorphClass() == $campaign->agent_type &&  $this->id == $campaign->agent_id;
+    }
+
     /**
      * Determine if the agent belongs to the given campaign.
      *
@@ -57,7 +66,7 @@ trait HasCampaigns
             return false;
         }
 
-        return $this->ownsCampaign($campaign) || $this->campaigns->contains(function ($c) use ($campaign) {
+        return $this->ownsCampaign($campaign) || $this->morphsToCampaign($campaign) || $this->campaigns->contains(function ($c) use ($campaign) {
                 return $c->id === $campaign->id;
             });
     }
@@ -102,6 +111,10 @@ trait HasCampaigns
         if (! $this->belongsToCampaign($campaign)) {
             return false;
         }
+
+//        if (! $this->morphsToCampaign($campaign)) {
+//            return false;
+//        }
 
         $this->setOrganizationCampaignBookmark($this->currentOrganization, $campaign);
 

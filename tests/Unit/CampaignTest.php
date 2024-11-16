@@ -38,8 +38,9 @@ test('campaign has a validity period', function () {
 });
 
 test('campaign has agent relation', function () {
-    $campaign = Campaign::factory()->forAgent()->create();
+    $campaign = Campaign::factory()->for(Agent::factory()->state(['name' => 'Mary Cruz']))->create();
     expect($campaign->agent)->toBeInstanceOf(Agent::class);
+    expect($campaign->agent->name)->toBe('Mary Cruz');
     $campaign = Campaign::factory()->create();
     expect($campaign->agent)->toBeNull();
     $agent = Agent::factory()->create();
@@ -91,7 +92,6 @@ test('campaign has seeder', function () {
     expect($campaign)->toBeInstanceOf(Campaign::class);
 });
 
-
 test('campaign is notifiable', function () {
     Notification::fake();
     $email = 'devops@joy-nostalg.com';
@@ -104,7 +104,8 @@ test('campaign is notifiable', function () {
 });
 
 test('campaign has data', function () {
-    $campaign = Campaign::factory()->forOrganization()->forAgent()->create();
+//    $campaign = Campaign::factory()->forOrganization()->forAgent()->create();
+    $campaign = Campaign::factory()->forOrganization()->for(Agent::factory())->create();
     $data = CampaignData::fromModel($campaign);
     expect($data->code)->toBe($campaign->id);
     expect($data->name)->toBe($campaign->name);
@@ -113,8 +114,9 @@ test('campaign has data', function () {
 });
 
 test('campaign has input attributes', function () {
-    $campaign = Campaign::factory()->forOrganization()->forAgent()->create();
+    $campaign = Campaign::factory()->forOrganization()->for(Agent::factory())->create();
     $campaign->inputAttributes = ['email', 'mobile'];
     $campaign = Campaign::find($campaign->id);
     expect($campaign->inputAttributes)->toBe(['email', 'mobile']);
 });
+

@@ -2,8 +2,8 @@
 
 namespace App\Data;
 
+use App\Models\{Agent, System};
 use Spatie\LaravelData\Data;
-use App\Models\Agent;
 
 class AgentData extends Data
 {
@@ -14,7 +14,7 @@ class AgentData extends Data
         public ?string $mobile
     ) {}
 
-    public static function fromModel(Agent $agent): self
+    public static function fromModel(Agent|System $agent): self
     {
         return new self(
             id: $agent->id,

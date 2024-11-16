@@ -18,12 +18,14 @@ return new class extends Migration
             $table->string('mobile')->nullable();
             $table->string('webhook', 2048)->nullable();
             $table->schemalessAttributes('meta');
-            $table->foreignId('user_id')->nullable();
+//            $table->foreignId('user_id')->nullable();
+            $table->nullableMorphs('agent');
             $table->foreignId('team_id')->nullable();
             $table->timestamp('enabled_at')->nullable();
             $table->timestamp('valid_until')->nullable();
             $table->timestamps();
-            $table->unique(['user_id', 'name']);
+//            $table->unique(['user_id', 'name']);
+            $table->unique(['agent_type', 'agent_id', 'name']);
         });
     }
 

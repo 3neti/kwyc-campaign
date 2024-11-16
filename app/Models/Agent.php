@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
-use App\Interfaces\CampaignUser;
 use App\Traits\{HasCampaigns, HasOrganizations};
 use Illuminate\Database\Eloquent\Collection;
+use App\Interfaces\CampaignUser;
 use Parental\HasParent;
+
 
 /**
  * Class Agent
@@ -29,4 +30,9 @@ class Agent extends User implements CampaignUser
     use HasOrganizations;
     use HasCampaigns;
     use HasParent;
+
+    public function campaigns()
+    {
+        return $this->morphMany(Campaign::class, 'agent');
+    }
 }

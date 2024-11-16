@@ -10,12 +10,11 @@ class EnsureEnabled
 {
     public function handle(Request $request, Closure $next): Response
     {
-        $campaign = $request->route('campaign');
-        if (false == $campaign->getAttribute('enabled')) {
-//            dd('disabled');
-            return redirect()->to(route('campaign-disabled'));
-        }
+        $campaign = $request->route(param: 'campaign');
 
-        return $next($request);
+        return $campaign->enabled
+            ? $next($request)
+            : redirect()->to(route('campaign-disabled'))
+            ;
     }
 }

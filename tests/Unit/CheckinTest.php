@@ -10,7 +10,7 @@ use App\Hyperverge\Events\ResultRetrieved;
 use App\Hyperverge\Data\HypervergeData;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Http;
-use App\Models\{Campaign, Checkin};
+use App\Models\{Agent, Campaign, Checkin};
 use Illuminate\Support\Carbon;
 
 uses(RefreshDatabase::class, WithFaker::class);
@@ -48,7 +48,7 @@ test('checkin has a boolean dates', function () {
     expect($checkin->user_cancelled_at)->toBeInstanceOf(Carbon::class);
     expect($checkin->system_declined_at)->toBeInstanceOf(Carbon::class);
 });
-
+//
 test('checkin belongs to a campaign', function () {
     $checkin = Checkin::factory()->make();
     expect($checkin->campaign)->toBeNull();
@@ -64,7 +64,7 @@ beforeEach(function () {
     $this->faker = $this->makeFaker('en_PH');
     $this->uuid = $this->faker->uuid();
     $this->json = mockJsonResponseRetrieveResult($this->uuid);
-    $this->checkin = tap(Campaign::factory()->forOrganization()->forAgent()
+    $this->checkin = tap(Campaign::factory()->forOrganization()->for(Agent::factory())
         ->has(Checkin::factory()->state(['id' => $this->uuid, 'url' => null]), 'checkins')
         ->create()->checkins[0], function ($checkin) {
         tap(app(RetrieveResult::class), function ($action) use ($checkin) {
