@@ -44,3 +44,7 @@ Route::get('campaign-checkin/{campaign}/{checkin?}', AutoCampaignCheckin::class)
     ->middleware(EnsureEnabled::class)
     ->middleware(SanctionAct::class)
     ->name('campaign-checkin');
+
+Route::get('checkin-user_cancelled', function () {
+    return 'user cancelled';
+})->name('checkin-user_cancelled');

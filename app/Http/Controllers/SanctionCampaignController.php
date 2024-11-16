@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use App\Data\CampaignData;
 use App\Models\Campaign;
 
-
 class SanctionCampaignController extends Controller
 {
     public function show(Request $request, Campaign $campaign): \Inertia\Response
