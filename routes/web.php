@@ -1,10 +1,10 @@
 <?php
 
+use App\Http\Middleware\EnsureEnabled;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use App\Actions\AutoCampaignCheckin;
 use Inertia\Inertia;
-
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -25,5 +25,10 @@ Route::middleware([
     })->name('dashboard');
 });
 
+Route::get('campaign-disabled', function () {
+    return 'disabled';
+})->name('campaign-disabled');
+
 Route::get('campaign-checkin/{campaign}/{checkin?}', AutoCampaignCheckin::class)
+    ->middleware(EnsureEnabled::class)
     ->name('campaign-checkin');
