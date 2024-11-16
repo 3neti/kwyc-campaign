@@ -12,7 +12,8 @@ class SanctionCampaignController extends Controller
     {
         return inertia()->render('Landing/Show', [
             'campaign' => CampaignData::fromModel($campaign)->only('name', 'agent.name'),
-            'code' => $campaign->id
+            'code' => $campaign->id,
+            'splash' => $campaign->splash
         ]);
     }
 

@@ -31,6 +31,7 @@ use Spatie\Tags\HasTags;
  * @property bool $enabled
  * @property bool $valid
  * @property array $inputAttributes
+ * @property string $splash
  *
  * @method int getKey()
  * @method static mixed find($id, $columns = ['*'])
@@ -47,13 +48,18 @@ class Campaign extends Model
     use HasTags;
 
     protected $fillable = [
-        'name', 'email', 'mobile', 'webhook'
+        'name', 'email', 'mobile', 'webhook', 'splash'
     ];
 
 //    public function agent(): \Illuminate\Database\Eloquent\Relations\BelongsTo
 //    {
 //        return $this->belongsTo(Agent::class, 'user_id');
 //    }
+
+    public function agent(): \Illuminate\Database\Eloquent\Relations\MorphTo
+    {
+        return $this->morphTo();
+    }
 
     public function organization(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
@@ -95,10 +101,5 @@ class Campaign extends Model
         $this->syncTagsWithType(tags: $value, type: Additional::tagType);
 
         return $this;
-    }
-
-    public function agent(): \Illuminate\Database\Eloquent\Relations\MorphTo
-    {
-        return $this->morphTo();
     }
 }

@@ -34,4 +34,16 @@ trait HasCampaignAttributes
     {
         return generateQRCodeURI(data: $this->url, logo: images_path('id-mark.png'));
     }
+
+    public function setSplashAttribute(?string $value): self
+    {
+        $this->meta->set('splash', $value);
+
+        return $this;
+    }
+
+    public function getSplashAttribute(): ?string
+    {
+        return $this->meta->get('splash');
+    }
 }

@@ -10,7 +10,8 @@ const props = defineProps({
         type: String,
         default: "Sanction Campaign"
     },
-    code: String
+    code: String,
+    splash: String
 });
 
 const form = useForm({
@@ -31,6 +32,11 @@ const submit = () => {
         <div class="py-1 text-xs text-indigo-600 dark:text-indigo-300">Label</div>
         {{ campaign }}
         <form @submit.prevent="submit">
+            <template v-if="splash?.length">
+                <div class="flex justify-center">
+                    <img :src="splash" class="h-auto max-w-full rounded-lg" alt="Landing" />
+                </div>
+            </template>
             <div class="flex items-center justify-between mt-4">
                 <SecondaryButton @click="form.agree=false; submit();">
                     Cancel
