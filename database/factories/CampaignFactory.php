@@ -18,7 +18,8 @@ class CampaignFactory extends Factory
     {
         return [
             'name' => $this->faker->sentence(),
-            'splash' => $this->faker->url()
+            'splash' => $this->faker->url(),
+            'rider' => $this->faker->url()
         ];
     }
 }

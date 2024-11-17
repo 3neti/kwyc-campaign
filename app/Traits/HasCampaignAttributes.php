@@ -46,4 +46,16 @@ trait HasCampaignAttributes
     {
         return $this->meta->get('splash');
     }
+
+    public function setRiderAttribute(?string $value): self
+    {
+        $this->meta->set('rider', $value);
+
+        return $this;
+    }
+
+    public function getRiderAttribute(): ?string
+    {
+        return $this->meta->get('rider');
+    }
 }

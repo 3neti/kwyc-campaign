@@ -1,6 +1,9 @@
 <?php
 
-use App\Hyperverge\Http\Controllers\RetrieveResultController;
+use App\Hyperverge\Http\Controllers\CallbackController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('hyperverge-api/result', RetrieveResultController::class)->name('hyperverge-result');
+/** @deprecated  */
+Route::get('hyperverge-api/result', CallbackController::class)->name('hyperverge-result');
+
+Route::get('hyperverge-callback', CallbackController::class)->name('hyperverge-callback');

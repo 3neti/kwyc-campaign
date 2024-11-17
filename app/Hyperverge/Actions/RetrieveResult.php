@@ -2,14 +2,15 @@
 
 namespace App\Hyperverge\Actions;
 
+use App\Hyperverge\Events\{CallbackAutoApproved, ResultRetrieved};
 use App\Hyperverge\Enums\Action as HypervergeAction;
 use Illuminate\Http\Client\ConnectionException;
-use App\Hyperverge\Events\ResultRetrieved;
-use Illuminate\Support\Carbon;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Lorisleiva\Actions\Concerns\AsAction;
 use GuzzleHttp\Promise\PromiseInterface;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Carbon;
 use App\Hyperverge\Hyperverge;
 use App\Models\Checkin;
 
@@ -18,7 +19,7 @@ use App\Models\Checkin;
  *
  * @property Hyperverge $hyperverge
  */
-class RetrieveResult
+class RetrieveResult implements ShouldQueue
 {
     use AsAction;
 
@@ -51,12 +52,21 @@ class RetrieveResult
         return $success;
     }
 
+    public function asJob(Checkin $checkin): void
+    {
+        $this->handle($checkin);
+    }
+
+    public function asListener(CallbackAutoApproved $event): void
+    {
+        self::dispatch($event->checkin);
+    }
+
     /**
      * @throws ConnectionException
      */
     protected function getHypervergeResponse(string $transactionId): PromiseInterface|Response
     {
-
         return Http::withHeaders(headers: $this->hyperverge->headers())
             ->post(
                 url: $this->hyperverge->url(),

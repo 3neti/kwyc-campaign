@@ -32,6 +32,7 @@ use Spatie\Tags\HasTags;
  * @property bool $valid
  * @property array $inputAttributes
  * @property string $splash
+ * @property string $rider
  *
  * @method int getKey()
  * @method static mixed find($id, $columns = ['*'])
@@ -48,13 +49,8 @@ class Campaign extends Model
     use HasTags;
 
     protected $fillable = [
-        'name', 'email', 'mobile', 'webhook', 'splash'
+        'name', 'email', 'mobile', 'webhook', 'splash', 'rider'
     ];
-
-//    public function agent(): \Illuminate\Database\Eloquent\Relations\BelongsTo
-//    {
-//        return $this->belongsTo(Agent::class, 'user_id');
-//    }
 
     public function agent(): \Illuminate\Database\Eloquent\Relations\MorphTo
     {

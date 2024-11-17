@@ -22,7 +22,7 @@ enum Action
         return match ($this) {
             Action::Request => [
                 'workflowId' => Hyperverge::$workflowId,
-                'redirectUrl' => route('hyperverge-result'),
+                'redirectUrl' => route('hyperverge-callback'),
                 'inputs' => Hyperverge::$inputs,
                 'languages' => Hyperverge::$languages,
                 'defaultLanguage' => Hyperverge::$defaultLanguage,

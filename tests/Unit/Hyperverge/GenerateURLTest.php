@@ -25,7 +25,7 @@ it('can inject hyperverge headers endpoint body', function () {
     $transactionId = $this->faker->uuid();
     tap(app(GenerateURL::class)->hyperverge->body($transactionId), function (array $body) {
         expect($body['workflowId'])->toBe(config('hyperverge.url.workflow'));
-        expect($body['redirectUrl'])->toBe(route('hyperverge-result'));
+        expect($body['redirectUrl'])->toBe(route('hyperverge-callback'));
         expect($body['inputs'])->toBe(['app' => config('app.name')]);
         expect($body['languages'])->toBe(['en' => 'English']);
         expect($body['defaultLanguage'])->toBe('en');

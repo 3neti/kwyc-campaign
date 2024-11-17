@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\SanctionCampaignController;
+use App\Hyperverge\Http\Controllers\CheckinContactController;
 use App\Http\Middleware\{EnsureEnabled, SanctionAct};
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -44,6 +45,8 @@ Route::get('campaign-checkin/{campaign}/{checkin?}', AutoCampaignCheckin::class)
     ->middleware(EnsureEnabled::class)
     ->middleware(SanctionAct::class)
     ->name('campaign-checkin');
+
+Route::get('checkin-contact/{checkin}', [CheckinContactController::class, 'show'])->name('checkin-contact.show');
 
 Route::get('checkin-user_cancelled', function () {
     return 'user cancelled';

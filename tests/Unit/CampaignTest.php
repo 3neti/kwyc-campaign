@@ -18,6 +18,7 @@ test('campaign has attributes', function () {
     expect($campaign->url)->toBe(route('campaign-checkin', ['campaign' => $campaign->id]));
     expect($campaign->qrcode_uri)->toBeString();
     expect($campaign->splash)->toBeString();
+    expect($campaign->rider)->toBeString();
 });
 
 test('campaign toggle between enabled and disabled', function () {
